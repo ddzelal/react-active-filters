@@ -8,8 +8,12 @@ const App = () => {
   const [display, setDisplay] = useState([]);
   const [filters, setFilters] = useState({
     inputFilter: "",
-    categoryFilter: undefined,
+    categoryFilter: "",
   });
+
+  const [category , setCategory] = useState([])
+
+  
 
   useEffect(() => {
     axios
@@ -20,8 +24,21 @@ const App = () => {
       .catch((message) => console.log(message));
   }, []);
 
+ 
+    
+    const Categorys = []
+    for (const key of display) {
+      Categorys.push(key.category)
+    }
+
+    let uniqueCategory = [...new Set(Categorys)];
+    
+
+  
+  
   const inputValue = (value) => {
     setFilters({ ...filters, inputFilter: value });
+    // setFilters({...filters , categoryFilter: })
     // setFilters((prevState) => {
     //   return {
     //     ...prevState,
@@ -38,19 +55,37 @@ const App = () => {
     // setDisplay(novi)
   };
 
+  const changeCategory = (e) => {
+    // for (const key of display) {
+    //   const no = display.filter((s) => {
+    //     return s.category === e;
+    //   });
+    //   setDisplay(no);
+    // }
+
+    setFilters({ ...filters, categoryFilter: e });
+  };
+
   return (
     <div>
       <SearchInput inputValue={inputValue} />
       <label>
         Pick your favorite category:
-        <select value={filters.categoryFilter}>
-          <option value="grapefruit">Musko</option>
-          <option value="lime">Zensko</option>
-          <option value="coconut">Pederi</option>
-          <option value="mango">Nestotrece</option>
+        <select
+          onChange={(e) => {
+            changeCategory(e.target.value);
+          }}
+          value={filters.categoryFilter}
+        >
+          <option value="">all</option>
+        {uniqueCategory.map( el => {
+          return (
+            <option value={el}>{el}</option>
+          )
+        } )}
         </select>
       </label>{" "}
-      <Display fetch1={display} filters={filters} />
+      <Display products={display} filters={filters}  />
     </div>
   );
 };
