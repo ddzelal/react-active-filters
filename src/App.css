@@ -1,0 +1,11 @@
+.card {
+    height: 600px;
+    font-size: 13px;
+}
+
+.card-items {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 100px;
+}

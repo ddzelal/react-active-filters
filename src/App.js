@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Display from "./components/Display";
 import SearchInput from "./components/SearchInput";
+import Label from "./components/Label";
 
 const App = () => {
   const [display, setDisplay] = useState([]);
@@ -10,32 +11,33 @@ const App = () => {
     inputFilter: "",
     categoryFilter: "",
   });
+  const [total, setTotal] = useState(0)
+  const [amount, setAmount] = useState(1)
 
-  const [category , setCategory] = useState([])
 
-  
 
   useEffect(() => {
     axios
       .get("https://fakestoreapi.com/products")
       .then((res) => {
+        res.data.forEach((el) => {
+          el.Counter = amount;
+        })
         setDisplay(res.data);
       })
       .catch((message) => console.log(message));
   }, []);
 
+  
  
-    
-    const Categorys = []
-    for (const key of display) {
-      Categorys.push(key.category)
-    }
+ 
+  // const Categorys = [];
+  // for (const key of display) {
+  //   Categorys.push(key.category);
+  // }
 
-    let uniqueCategory = [...new Set(Categorys)];
-    
+  // let uniqueCategory = [...new Set(Categorys)];
 
-  
-  
   const inputValue = (value) => {
     setFilters({ ...filters, inputFilter: value });
     // setFilters({...filters , categoryFilter: })
@@ -69,23 +71,10 @@ const App = () => {
   return (
     <div>
       <SearchInput inputValue={inputValue} />
-      <label>
-        Pick your favorite category:
-        <select
-          onChange={(e) => {
-            changeCategory(e.target.value);
-          }}
-          value={filters.categoryFilter}
-        >
-          <option value="">all</option>
-        {uniqueCategory.map( el => {
-          return (
-            <option value={el}>{el}</option>
-          )
-        } )}
-        </select>
-      </label>{" "}
-      <Display products={display} filters={filters}  />
+      <Label display={display} filters={filters}   setFilters={setFilters} />
+      <h1>Total :{total.toFixed(2)}</h1>
+      <Display products={display} filters={filters} total={total} setTotal={setTotal} />
+      {/* <Hamper /> */}
     </div>
   );
 };
