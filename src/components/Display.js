@@ -16,7 +16,7 @@ export default function Display({ products, filters, total, setTotal }) {
     setTotal(total + price);
   };
 
-  console.log();
+  console.log("sdada");
 
   const removeItems = (i, price, counter) => {
     let removedArr = items;
