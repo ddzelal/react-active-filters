@@ -15,8 +15,8 @@ export default function Display({ products, filters ,total ,setTotal }) {
       setItems([...items , products[i]])
     }
     if(items.includes(products[i])){
-      let dzenan = products[i].Counter+=1
-      setCounter(dzenan)
+      let newCounter = products[i].Counter+=1
+      setCounter(newCounter)
     }
     setTotal(total + price)
     
